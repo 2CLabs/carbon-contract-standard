@@ -244,14 +244,14 @@ datalayer contract 对应的JSON格式的因子数据为:
 ```json
 {
     //化石燃料燃烧
- 	"carbon_fuel": {
+    "carbon_fuel": {
         type: "od",
         parameter_name: ["name"],
         data:
             [
                 [{ value: "gas", unit: "" }, { value: 2513.8, unit: "kJ/kg" }],
             ],
-    }
+    },
     // 饱和蒸汽热焓
     "carbon_content": {
         type: "sd",
@@ -259,7 +259,7 @@ datalayer contract 对应的JSON格式的因子数据为:
         desc: "",
         data:
             [
-                [{ value: 0.001, unit: "MPa" }, { value: 6.98, unit: "℃" }, { value: 2513.8, unit: "kJ/kg", range:{ min:0, max: 2} }],
+                [{ value: 0.001, unit: "MPa" }, { value: 6.98, unit: "℃" }, { value: 2513.8, unit: "kJ/kg", range: { min: 0, max: 2 } }],
             ],
     },
 }
