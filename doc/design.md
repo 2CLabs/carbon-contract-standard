@@ -241,7 +241,7 @@ datalayercontract: "A DataLayer contract address",
 
 datalayer contract 对应的JSON格式的因子数据为:
 
-```json
+```
 {
     //化石燃料燃烧
     "carbon_fuel": {
