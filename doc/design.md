@@ -148,6 +148,7 @@
 
 * 国标因子合约索引命名： `GB_${行业编号}_factor_${YYMMDD}_${预留4个字符}`
 * 国标公式合约索引命名： `GB_${行业编号}_falmula_${YYMMDD}_${预留4个字符}`
+* 国标计算代码合约索引命名： `GB_calculate_${YYMMDD}_${预留4个字符}`
 
 #### 命名列表
 
@@ -175,6 +176,14 @@
 
 ...
 
+* 国标计算代码合约索引命名
+
+| 行业名         | 索引名                       |
+| -------------- | ---------------------------- |
+| 2012年计算公式 | `GB_calculate_20221001_0000` |
+| 2013年计算公式 | `GB_calculate_20231001_0000` |
+| ...            |                              |
+
 
 
 ### 合约1  碳系统索引合约
@@ -182,7 +191,7 @@
 #### 数据结构
 
 ```
-contract_num: 4,
+contract_num: 6,
 
 mapping(string => address) //对应的合约地址mapping，如：
 contracts: {
@@ -190,6 +199,8 @@ contracts: {
     "GB_02_factor_20231030_0000": "电网企业factor contract address",
     "GB_01_formula_20231030_0000": "发电企业formula contract address",
     "GB_02_formula_20231030_0000": "电网企业formula contract address",
+    “GB_calculate_20221001_0000”:"国标2022年calculate contract address",
+    “GB_calculate_20231001_0000”:"国标2023年calculate contract address",
 }
 ```
 
@@ -244,12 +255,12 @@ industrycode:"01",
 year: "2023",
 name: "国标因子库-发电企业行业",
 version: "v1.0.0",
-datalayercontract: "DataLayer contract address",
+datalayerhash: "DataLayer hash",
 ```
 
 #### 数据示例
 
-datalayer contract 对应的JSON格式的因子数据为:
+datalayer hash 对应的JSON格式的因子数据为:
 
 ```
 {
@@ -299,12 +310,12 @@ datalayer contract 对应的JSON格式的因子数据为:
  year: "2023",
  name: "国标计算公式-发电企业行业",
  version: "v1.0.0",
- datalayercontract: "DataLayer contract address",
+ datalayerhash: "DataLayer hash",
 ```
 
 #### 数据示例
 
-datalayer contract 对应的JSON格式的公式数据为:
+datalayer hash 对应的JSON格式的公式数据为:
 
 ```
 {
@@ -388,29 +399,30 @@ datalayerhash 对应的JSON格式的碳排数据为:
 
 ```
 {
+    "title": "2023年XX发电厂碳排数据",
+    "total": "11023.345",
     "records": [
-        // 用户自填因子
-        { "FC": 1, "NCV": 1, "CC": 1, "OF": 100, "fule": "天然气" },
-
-        // 使用默认因子，当然如果fule在因子表中不存在，就应该报错
-        { "FC": 1, "fule": "天然气" },
+        // 用户自测因子
+        { "FC": 100,unit:"t","NCV": 26.7, "CC": 0.02858, "OF": 93, "fule": "燃煤" },
+        
+        // 使用默认因子，如果fule在默认因子表中不存在，就应该报错
+        { "FC": 120, unit:"t", "fule": "燃料油" },
+        { "FC": 210, unit:"wNm³", "fule": "天然气" },        
+        { "AC": 10.45, unit:"MWh", "electricity": "净购入使用的电力" },        
+        { "B": 20.33, unit:"t", "process_1": "工业生产过程(脱硫过程)-石灰石" },
 
     ],
-
-    "title": "四月",
-
-    "total": "11023.345",
 
     "extrainfo": [
 
         "文件"[
-        [{ "name": "2023年4月燃煤进厂台账文件" },
+        [{ "name": "2023年4月燃料有进厂台账文件" },
         { "datalayerhash": "0x12345678901234567890123456789012" }],
 
         [{ "name": "2023年4月购电发票" },
         { "datalayerhash": "0x12345678901234567890123456789013" }]
         
-        [{ "name": "2023年4月燃油自测因子测试量具和测试方法及过程文件" },
+        [{ "name": "2023年燃煤自测因子测试量具和测试方法及过程文件" },
         { "datalayerhash": "0x12345678901234567890123456789014" }]
         
         [{ "name": "2023年碳排整改文件" },
