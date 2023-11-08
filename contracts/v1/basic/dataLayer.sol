@@ -3,7 +3,7 @@
 pragma solidity ^0.6.0;
 import {BytesLib} from "./BytesLib.sol";
 
-contract DataV2 {
+contract DataLayerSigle {
     using BytesLib for bytes;
     struct DataBlock {
         bytes32 finalHash; // 更新后，原始数据Hash
