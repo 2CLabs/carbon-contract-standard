@@ -148,6 +148,7 @@
 
 * 国标因子合约索引命名： `GB_${行业编号}_factor_${YYMMDD}_${预留4个字符}`
 * 国标公式合约索引命名： `GB_${行业编号}_falmula_${YYMMDD}_${预留4个字符}`
+* 国标计算代码合约索引命名： `GB_calculate_${YYMMDD}_${预留4个字符}`
 
 #### 命名列表
 
@@ -175,6 +176,14 @@
 
 ...
 
+* 国标计算代码合约索引命名
+
+| 行业名         | 索引名                       |
+| -------------- | ---------------------------- |
+| 2012年计算公式 | `GB_calculate_20221001_0000` |
+| 2013年计算公式 | `GB_calculate_20231001_0000` |
+| ...            |                              |
+
 
 
 ### 合约1  碳系统索引合约
@@ -182,7 +191,7 @@
 #### 数据结构
 
 ```
-contract_num: 4,
+contract_num: 6,
 
 mapping(string => address) //对应的合约地址mapping，如：
 contracts: {
@@ -190,6 +199,8 @@ contracts: {
     "GB_02_factor_20231030_0000": "电网企业factor contract address",
     "GB_01_formula_20231030_0000": "发电企业formula contract address",
     "GB_02_formula_20231030_0000": "电网企业formula contract address",
+    “GB_calculate_20221001_0000”:"国标2022年calculate contract address",
+    “GB_calculate_20231001_0000”:"国标2023年calculate contract address",
 }
 ```
 
@@ -199,23 +210,36 @@ contracts: {
 
 ### 合约2  国标24行业因子库
 
-#### 类型
+#### 因子数据类型
 
-`常量` `一维数据` `二维数据`
+因子数据分为3种类型
+
+`常量(co)` `一维数据(od)` `二维数据(sd)`
+
+- 常量
+
+```
+例：
+type = co
+value_symbol = f()
+value_symbol： 全国电力因子
+```
 
 * 一维数据： 
 
 ```
 例：
+type = od
 value_symbol = f(name)
-nam： 燃料名
-value_symbol： 氧化率、含碳量
+name： 燃料名
+value_symbol： 氧化率、低位热值、单位热值含碳量
 ```
 
 * 二维数据
 
 ```
 例：
+type = sd
 value_symbol = f( P, T )
 P : 压力
 T: 温度
@@ -228,42 +252,54 @@ value_symbol：热焓
 
 ```
 industrycode:"01",
-
+year: "2023",
 name: "国标因子库-发电企业行业",
 version: "v1.0.0",
-
-datalayercontract: "A DataLayer contract address",
+datalayerhash: "DataLayer hash",
 ```
 
 #### 数据示例
 
-datalayer contract 对应的JSON格式的因子数据为:
+datalayer hash 对应的JSON格式的因子数据为:
 
 ```
 {
-    //化石燃料燃烧
-    "carbon_fuel": {
+    "fuel": {
         type: "od",
+        factorid: "01-01",
         parameter_name: ["name"],
+        desc: "化石燃料燃烧",
         data:
             [
-                [{ value: "gas", unit: "" }, { value: 2513.8, unit: "kJ/kg" }],
+                [{ value: "燃煤", symbol: "",desc:"", unit: "" }, { value: 0.02858, symbol: "CC",desc:"单位热值含碳量",source: "IPCC国家温室气体清单指南-2006",unit: "tC/GJ" ,range: { min: 0.02858, max: 0.03085 } }，{ value: 26.7, symbol: "NCV",desc:"低位热值",source: "中国温室气体清单研究-2005",unit: "GJ/t", range: { min: 14.449, max: 26.7 } }，{ value: 98, symbol: "OF",desc:"氧化率",source: "省级温室气体清单编制指南-无",unit: "%" }],
+            ],
+            ......
+    },
+    "electricity": {
+        type: "co",
+        factorid: "01-02",
+        parameter_name: [],
+        desc: "净购入使用的电力",
+        data:
+            [
+                [{ value: 0.581, symbol: "EF",desc:"电力排放因子",source: "《生态环境部印发企业温室气体排放核算方法与报告指南发电设施（2021年修订版）》（征求意见稿）-2021",unit: "tCO2/MWh" }],
             ],
     },
-    // 饱和蒸汽热焓
-    "carbon_content": {
-        type: "sd",
-        parameter_name: ["pressure", "temperature"],
-        desc: "",
+    "process_1": {
+        type: "od",
+        factorid: "01-03",
+        parameter_name: ["name"],
+        desc: "工业生产过程(脱硫过程)",
         data:
             [
-                [{ value: 0.001, unit: "MPa" }, { value: 6.98, unit: "℃" }, { value: 2513.8, unit: "kJ/kg", range: { min: 0, max: 2 } }],
+                [{ value: "CaCO3", symbol: "",desc: "石灰石", unit: "" }, { value: 90, symbol: "I",desc: "碳酸盐含量",source: "",unit: "%" }，{ value: 100, symbol: "TR",desc: "转化率",source: "",unit: "%"}，{ value: 0.44, symbol: "EF",desc: "碳酸盐排放因子",source: "",unit: "tCO2/t" }],
             ],
+            ......
     },
 }
 ```
 
-
+具体格式请参考《factor24_spec.md》
 
 ### 合约3  国标24行业计算公式合约
 
@@ -271,42 +307,56 @@ datalayer contract 对应的JSON格式的因子数据为:
 
 ```
  industrycode:"01"
-
+ year: "2023",
  name: "国标计算公式-发电企业行业",
  version: "v1.0.0",
-
- jscode: "Calculate JS source code",
+ datalayerhash: "DataLayer hash",
 ```
 
 #### 数据示例
 
-datalayer contract 对应的JSON格式的公式数据为:
+datalayer hash 对应的JSON格式的公式数据为:
 
 ```
 {
 
 "sum":{
     type: "emission_summary",
-    formulaid: "01-000",name: "汇总公式",
-    formula: "E_fuel + E_e + E_h + E_st + E_proc_e + E_proc -  R",
-    factor: "", //关联因子
+    formulaid: "01-00",
+    name: "汇总公式",
+    formula: "E_fuel + E_electricity + E_process_1",
+    factor: "01-00", //关联因子
     calculate_logic: "", // 计算逻辑
-},
+ },
 
-“E_fuel":{type: "emission_item",
-
-       formulaid: "01-001",
-
-        name: "燃料燃烧产生的CO2排放量",
-        formula: "(FC*NCV)* CC*OF*44/12",
-        factor: "", //关联因子
-        calculate_logic: "", // 计算逻辑
-    },
-
+“E_fuel":{
+    type: "emission_item",
+    formulaid: "01-01",
+    name: "化石燃料燃烧产生的CO2排放量",
+    formula: "(FC×NCV)×CC×OF×44/12",
+    factor: "01-01", //关联因子
+    calculate_logic: "", // 计算逻辑
+ },
+ “E_electricity":{
+    type: "emission_item",
+    formulaid: "01-02",
+    name: "净购入使用的电力产生的CO2排放量",
+    formula: "AC×EF",
+    factor: "01-02", //关联因子
+    calculate_logic: "", // 计算逻辑
+ },
+ “E_process_1":{
+    type: "emission_item",
+    formulaid: "01-03",
+    name: "工业生产过程(脱硫过程)产生的CO2排放量",
+    formula: "B×I×EF×TR",
+    factor: "01-03", //关联因子
+    calculate_logic: "", // 计算逻辑
+ },
 }
 ```
 
-
+具体格式请参考《formula24_spec.md》
 
 
 
@@ -349,29 +399,30 @@ datalayerhash 对应的JSON格式的碳排数据为:
 
 ```
 {
+    "title": "2023年XX发电厂碳排数据",
+    "total": "11023.345",
     "records": [
-        // 用户自填因子
-        { "FC": 1, "NCV": 1, "CC": 1, "OF": 100, "fule": "天然气" },
-
-        // 使用默认因子，当然如果fule在因子表中不存在，就应该报错
-        { "FC": 1, "fule": "天然气" },
+        // 用户自测因子
+        { "FC": 100,unit:"t","NCV": 26.7, "CC": 0.02858, "OF": 93, "fule": "燃煤" },
+        
+        // 使用默认因子，如果fule在默认因子表中不存在，就应该报错
+        { "FC": 120, unit:"t", "fule": "燃料油" },
+        { "FC": 210, unit:"wNm³", "fule": "天然气" },        
+        { "AC": 10.45, unit:"MWh", "electricity": "净购入使用的电力" },        
+        { "B": 20.33, unit:"t", "process_1": "工业生产过程(脱硫过程)-石灰石" },
 
     ],
-
-    "title": "四月",
-
-    "total": "11023.345",
 
     "extrainfo": [
 
         "文件"[
-        [{ "name": "2023年4月燃煤进厂台账文件" },
+        [{ "name": "2023年4月燃料有进厂台账文件" },
         { "datalayerhash": "0x12345678901234567890123456789012" }],
 
         [{ "name": "2023年4月购电发票" },
         { "datalayerhash": "0x12345678901234567890123456789013" }]
         
-        [{ "name": "2023年4月燃油自测因子测试量具和测试方法及过程文件" },
+        [{ "name": "2023年燃煤自测因子测试量具和测试方法及过程文件" },
         { "datalayerhash": "0x12345678901234567890123456789014" }]
         
         [{ "name": "2023年碳排整改文件" },
@@ -383,3 +434,4 @@ datalayerhash 对应的JSON格式的碳排数据为:
 }
 ```
 
+具体格式请参考《carbon_report_spec.md》
