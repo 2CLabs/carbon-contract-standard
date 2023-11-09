@@ -134,7 +134,7 @@ contract DataLayerMultiple is UserAuth {
         bytes32 dataLayerNameHash,
         bytes memory depsData,
         bool isEncrypted
-    ) public {
+    ) external {
         // 需要附带一个数据
         _checkDepsDataLength(depsData);
         DataLayer memory dl = _mapLayer[dataLayerNameHash];
@@ -327,7 +327,7 @@ contract DataLayerMultiple is UserAuth {
         depsNameHashArray = dl.depsNameHashArray;
     }
 
-    // 获取一个dataLayer一个修改信息
+    // 获取一个dataLayer中的一次修改信息
     function getDataBlock(
         bytes32 dataLayerNameHash,
         uint32 index
