@@ -7,7 +7,7 @@ import {UserAuth} from "../basic/UserAuth.sol";
 
 contract CarbonEmmissions is UserAuth {
     struct Emmission {
-        string dataHash;
+        bytes32 dataHash;
         bool isValid;
         bool isAggregated;
         string title;
@@ -16,8 +16,10 @@ contract CarbonEmmissions is UserAuth {
 
     string internal constant ERR_NO_ANNUAL_DATA = "No this annual data";
     string internal constant ERR_INDEX_INVALID = "Index invalid";
+    string internal constant ERR_DATA_HASH_IS_INVALID = "Data hash is invalid";
 
     string internal constant _THIS_CONTRACT_VERSIOIN = "v1.0.0";
+    bytes32 emptyBytes32;
 
     string private _name;
     address private _dataLayerAccount;
@@ -34,12 +36,13 @@ contract CarbonEmmissions is UserAuth {
 
     function add(
         string memory year,
-        string memory dataHash,
+        bytes32 dataHash,
         string memory title,
         bool isAggregated,
         uint256 result
     ) public {
         checkOperator();
+        require(dataHash != emptyBytes32, ERR_DATA_HASH_IS_INVALID);
         Emmission memory emmission = Emmission(
             dataHash,
             true,
@@ -67,7 +70,7 @@ contract CarbonEmmissions is UserAuth {
         _info[year][index].isValid = false;
     }
 
-    function getInfo()
+    function info()
         public
         view
         returns (

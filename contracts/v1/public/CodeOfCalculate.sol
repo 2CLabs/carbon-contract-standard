@@ -12,12 +12,15 @@ contract CodeOfCaculate is UserAuth{
         string version;
         string content;
         address dataLayerAccount;
-        string dataLayerHash;
+        bytes32 dataLayerHash;
     }
     string internal constant _THIS_CONTRACT_VERSIOIN = "v1.0.0";
+    string internal constant ERR_DATA_HASH_IS_INVALID = "Data hash is invalid";
+    bytes32 emptyBytes32;
     Info private _info;
 
-    constructor(string memory in_name, string memory in_version, string memory in_content, address in_dataLayerAccount, string memory in_dataLayerHash) UserAuth() public {
+    constructor(string memory in_name, string memory in_version, string memory in_content, address in_dataLayerAccount, bytes32 in_dataLayerHash) UserAuth() public {
+        require(in_dataLayerHash != emptyBytes32, ERR_DATA_HASH_IS_INVALID);
         _info.name = in_name;
         _info.version = in_version;
         _info.content = in_content;
