@@ -5,7 +5,7 @@ pragma experimental ABIEncoderV2;
 
 import {UserAuth} from "../basic/UserAuth.sol";
 
-contract CarbonEmissionStandard is UserAuth {
+contract CEStandardEntry is UserAuth {
     uint32 private _contractsNum;
     address private _dataLayerAccount;
     mapping(uint32 => string) private _contractName;
