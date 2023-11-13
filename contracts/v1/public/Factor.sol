@@ -6,7 +6,7 @@ pragma experimental ABIEncoderV2;
 import {UserAuth} from "../basic/UserAuth.sol";
 
 
-contract Facor is UserAuth {
+contract Factor is UserAuth {
     struct Info {
         string name;
         string version;

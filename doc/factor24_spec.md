@@ -218,7 +218,7 @@ value_symbol：热焓
 | 一级字段       | 二级字段 | 字段描述                                                     | 是否可调整 |
 | -------------- | -------- | ------------------------------------------------------------ | ---------- |
 | type           | 无       | 因子数据类型,co:常量 od:一维数据 sd:二维数据                 | No         |
-| factorid       | 无       | 因子所属排放源,如 01-01对应发电企业化石燃料燃烧              | No         |
+| factor_id      | 无       | 因子所属排放源,如 01-01对应发电企业化石燃料燃烧              | No         |
 | parameter_name | 无       | 因子数据类型对应的参数名称,如name,pressure,temperature       | No         |
 | desc           | 无       | 排放源中文名称,如"化石燃料燃烧"                              | No         |
 | data           | value    | 因子值                                                       | Yes        |
@@ -242,7 +242,7 @@ value_symbol：热焓
 {
     "fuel": {
         type: "od",
-        factorid: "01-01",
+        factor_id: "01-01",
         parameter_name: ["name"],
         desc: "化石燃料燃烧",
         data:
@@ -253,7 +253,7 @@ value_symbol：热焓
     },
     "electricity": {
         type: "co",
-        factorid: "01-02",
+        factor_id: "01-02",
         parameter_name: [],
         desc: "净购入使用的电力",
         data:
@@ -263,7 +263,7 @@ value_symbol：热焓
     },
     "process_1": {
         type: "od",
-        factorid: "01-03",
+        factor_id: "01-03",
         parameter_name: ["name"],
         desc: "工业生产过程(脱硫过程)",
         data:
@@ -285,7 +285,7 @@ value_symbol：热焓
 {
     "fuel": {
         type: "od",
-        factorid: "19-01",
+        factor_id: "19-01",
         parameter_name: ["name"],
         desc: "化石燃料燃烧",
         data:
@@ -297,7 +297,7 @@ value_symbol：热焓
     },
     "electricity": {
         type: "co",
-        factorid: "19-02",
+        factor_id: "19-02",
         parameter_name: [],
         desc: "净购入使用的电力",
         data:
@@ -307,7 +307,7 @@ value_symbol：热焓
     },
     "hot": {
         type: "co",
-        factorid: "19-03",
+        factor_id: "19-03",
         parameter_name: [],
         desc: "净购入的热力",
         data:
@@ -317,7 +317,7 @@ value_symbol：热焓
     },
     "steam": {
         type: "sd",
-        factorid: "19-04",
+        factor_id: "19-04",
         parameter_name: ["pressure", "temperature"],
         desc: "净购入的蒸汽",
         data:
@@ -328,7 +328,7 @@ value_symbol：热焓
     },
     "process_1": {
         type: "od",
-        factorid: "19-05",
+        factor_id: "19-05",
         parameter_name: ["name"],
         desc: "工业生产过程(碳酸盐分解)",
         data:
@@ -339,7 +339,7 @@ value_symbol：热焓
     },
     "process_2": {
         type: "od",
-        factorid: "19-06",
+        factor_id: "19-06",
         parameter_name: ["name"],
         desc: "工业生产过程(碳化工艺吸收)",
         data:

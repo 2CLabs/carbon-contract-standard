@@ -219,7 +219,7 @@
 | formula_id      | 公式id,如 01-01对应发电企业化石燃料燃烧公式               |
 | name            | 公式名称,如化石燃料燃烧产生的CO2排放量                    |
 | formula         | 公式                                                      |
-| factor          | 对应的因子id,如01-01对应发电企业化石燃料燃烧因子          |
+| factor_id       | 对应的因子id,如01-01对应发电企业化石燃料燃烧因子          |
 | calculate_logic | 计算逻辑                                                  |
 
 ​    表中所有字段均固定不变.
@@ -240,7 +240,7 @@
     formula_id: "01-00",
     name: "汇总公式",
     formula: "E_fuel + E_electricity + E_process_1",
-    factor: "01-00", //关联因子
+    factor_id: "01-00", //关联因子
     calculate_logic: "", // 计算逻辑
  },
 
@@ -249,7 +249,7 @@
     formula_id: "01-01",
     name: "化石燃料燃烧产生的CO2排放量",
     formula: "(FC*NCV)*CC*OF*44/12",
-    factor: "01-01", //关联因子
+    factor_id: "01-01", //关联因子
     calculate_logic: "", // 计算逻辑
  },
  “E_electricity":{
@@ -265,7 +265,7 @@
     formula_id: "01-03",
     name: "工业生产过程(脱硫过程)产生的CO2排放量",
     formula: "B*I*EF*TR",
-    factor: "01-03", //关联因子
+    factor_id: "01-03", //关联因子
     calculate_logic: "", // 计算逻辑
  },
 }
@@ -285,7 +285,7 @@
     formula_id: "19-00",
     name: "汇总公式",
     formula: "E_fuel + E_electricity + E_hot + E_steam + E_process_1 - E_process_2",
-    factor: "19-00", //关联因子
+    factor_id: "19-00", //关联因子
     calculate_logic: "", // 计算逻辑
  },
 
@@ -294,7 +294,7 @@
     formula_id: "19-01",
     name: "化石燃料燃烧产生的CO2排放量",
     formula: "(FC*NCV)*CC*OF*44/12",
-    factor: "19-01", //关联因子
+    factor_id: "19-01", //关联因子
     calculate_logic: "", // 计算逻辑
  },
  “E_electricity":{
@@ -302,7 +302,7 @@
     formula_id: "19-02",
     name: "净购入使用的电力产生的CO2排放量",
     formula: "AD*EF",
-    factor: "19-02", //关联因子
+    factor_id: "19-02", //关联因子
     calculate_logic: "", // 计算逻辑
  },
  “E_hot":{
@@ -318,7 +318,7 @@
     formula_id: "19-04",
     name: "净购入的蒸汽产生的CO2排放量",
     formula: "[Ma*(En-83.74)/1000]*EF",
-    factor: "19-04", //关联因子
+    factor_id: "19-04", //关联因子
     calculate_logic: "", // 计算逻辑
  },
  “E_process_1":{
@@ -326,7 +326,7 @@
     formula_id: "19-05",
     name: "工业生产过程(碳酸盐分解)产生的CO2排放量",
     formula: "AD*n*∑(EF*PUR)",
-    factor: "19-05", //关联因子
+    factor_id: "19-05", //关联因子
     calculate_logic: "", // 计算逻辑
  },
  “E_process_2":{
@@ -334,7 +334,7 @@
     formula_id: "19-06",
     name: "工业生产过程(碳化工艺吸收)产生的CO2排放量",
     formula: "AD*∑(EF*PUR)",
-    factor: "19-06", //关联因子
+    factor_id: "19-06", //关联因子
     calculate_logic: "", // 计算逻辑
  },
 }
